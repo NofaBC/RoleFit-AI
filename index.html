@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>RoleFit AI™ – Smart Hiring Copilot</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta
+    name="description"
+    content="RoleFit AI™ – Write the job. Read the resumes. Advise the decision."
+  />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    :root {
+      --bg-gradient: linear-gradient(135deg, #1b1740, #3529a5, #ff6cab, #ffc542);
+      --card-bg: rgba(15, 14, 40, 0.88);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --accent: #ffb347;
+      --accent-2: #7cf2ff;
+      --accent-soft: rgba(255, 255, 255, 0.08);
+      --text-main: #f9fafb;
+      --text-muted: #a5b4fc;
+      --danger: #fb7185;
+      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.45);
+      --radius-xl: 22px;
+      --radius-lg: 18px;
+      --radius-pill: 999px;
+      --input-bg: rgba(15, 23, 42, 0.9);
+      --input-border: rgba(148, 163, 184, 0.5);
+      --btn-bg: #ff6cab;
+      --btn-bg-hover: #ff4b8b;
+      --btn-text: #0b1020;
+      --badge-bg: rgba(15, 23, 42, 0.85);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text-main);
+      background-image: var(--bg-gradient);
+      background-size: 300% 300%;
+      animation: bgShift 24s ease-in-out infinite;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    @keyframes bgShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .page-shell {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px 18px 40px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 18px;
+      background: radial-gradient(circle at 20% 20%, #ffffff, #ffb347 45%, #ff4b8b 80%);
+      box-shadow: 0 0 24px rgba(255, 255, 255, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0b1020;
+      font-weight: 800;
+      font-size: 20px;
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title {
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      font-size: 1.05rem;
+    }
+
+    .brand-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .pill {
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      background: var(--badge-bg);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-muted);
+    }
+
+    .pill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 12px rgba(34, 197, 94, 0.9);
+    }
+
+    .btn-outline {
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      background: transparent;
+      color: #e5e7eb;
+      padding: 7px 14px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: 0.15s ease all;
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-outline:hover {
+      background: rgba(15, 23, 42, 0.6);
+      transform: translateY(-1px);
+    }
+
+    /* HERO */
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 26px;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .hero-copy {
+      padding: 22px 22px 20px;
+      border-radius: var(--radius-xl);
+      background: radial-gradient(circle at top left, rgba(252, 211, 77, 0.2), rgba(15, 23, 42, 0.9));
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .hero-badge {
+      font-size: 0.72rem;
+      padding: 5px 11px;
+      border-radius: var(--radius-pill);
+      background: rgba(15, 23, 42, 0.8);
+      color: var(--accent-2);
+      border: 1px solid rgba(125, 211, 252, 0.4);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hero-title {
+      font-size: 1.9rem;
+      line-height: 1.2;
+      margin: 0 0 10px;
+    }
+
+    .hero-title span.highlight {
+      background: linear-gradient(120deg, #fecaca, #fed7aa, #bfdbfe);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: 0.96rem;
+      color: var(--text-muted);
+      max-width: 480px;
+      margin-bottom: 18px;
+    }
+
+    .hero-cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .btn-primary {
+      background: var(--btn-bg);
+      color: var(--btn-text);
+      border-radius: var(--radius-pill);
+      border: none;
+      padding: 9px 18px;
+      font-weight: 600;
+      font-size: 0.86rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 14px 30px rgba(248, 113, 113, 0.55);
+      transition: 0.18s ease all;
+      letter-spacing: 0.02em;
+    }
+
+    .btn-primary:hover {
+      background: var(--btn-bg-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 18px 40px rgba(248, 113, 113, 0.75);
+    }
+
+    .hero-meta {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .hero-meta span strong {
+      color: #e5e7eb;
+    }
+
+    .hero-float {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      font-size: 0.7rem;
+      padding: 6px 11px;
+      border-radius: var(--radius-pill);
+      background: rgba(15, 23, 42, 0.82);
+      border: 1px solid rgba(251, 191, 36, 0.65);
+      color: #fed7aa;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .hero-float-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: #f97316;
+      box-shadow: 0 0 14px rgba(248, 250, 252, 0.7);
+    }
+
+    .hero-visual {
+      border-radius: var(--radius-xl);
+      background: radial-gradient(circle at 20% 0%, rgba(248, 250, 252, 0.1), rgba(15, 23, 42, 0.9));
+      box-shadow: var(--shadow-soft);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 14px 14px 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-image-wrapper {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      position: relative;
+    }
+
+    .hero-image {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+      max-height: 280px;
+    }
+
+    .hero-image-gradient {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 0% 0%, rgba(244, 114, 182, 0.35), transparent 55%),
+                  radial-gradient(circle at 100% 100%, rgba(56, 189, 248, 0.4), transparent 55%);
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+
+    .hero-stat-card {
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      padding: 10px 12px;
+      border-radius: 16px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      font-size: 0.72rem;
+      backdrop-filter: blur(16px);
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .hero-stat-label {
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 0.66rem;
+    }
+
+    .hero-stat-value {
+      font-weight: 600;
+    }
+
+    .hero-pill-top {
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      padding: 7px 11px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(129, 140, 248, 0.8);
+      font-size: 0.68rem;
+      color: #c7d2fe;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* MAIN LAYOUT */
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.1fr);
+      gap: 22px;
+    }
+
+    .panel {
+      background: var(--card-bg);
+      border-radius: var(--radius-xl);
+      border: 1px solid var(--card-border);
+      padding: 18px 18px 16px;
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(18px);
+      margin-bottom: 16px;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .panel-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .panel-tag {
+      font-size: 0.68rem;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      color: var(--text-muted);
+    }
+
+    .panel-description {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 10px;
+    }
+
+    label {
+      font-size: 0.76rem;
+      color: #e5e7eb;
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .field-sub {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      margin-bottom: 3px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    textarea,
+    select {
+      width: 100%;
+      padding: 7px 9px;
+      border-radius: 11px;
+      border: 1px solid var(--input-border);
+      background: var(--input-bg);
+      color: #e5e7eb;
+      font-size: 0.78rem;
+      outline: none;
+      transition: 0.16s ease border, 0.16s ease box-shadow, 0.16s ease transform;
+      resize: vertical;
+      min-height: 34px;
+    }
+
+    textarea {
+      min-height: 70px;
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #64748b;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: #38bdf8;
+      box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.6);
+      transform: translateY(-0.5px);
+    }
+
+    .section-divider {
+      margin: 10px 0 12px;
+      border-top: 1px dashed rgba(148, 163, 184, 0.5);
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-ghost {
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      background: rgba(15, 23, 42, 0.9);
+      color: #e5e7eb;
+      padding: 6px 12px;
+      font-size: 0.76rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: 0.14s ease all;
+    }
+
+    .btn-ghost:hover {
+      background: rgba(30, 64, 175, 0.8);
+      transform: translateY(-0.5px);
+    }
+
+    .output-box {
+      margin-top: 10px;
+      padding: 10px 11px;
+      border-radius: 13px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      font-size: 0.75rem;
+      color: #e5e7eb;
+      min-height: 80px;
+      white-space: pre-wrap;
+      overflow-y: auto;
+      max-height: 220px;
+    }
+
+    .output-label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge-soft {
+      padding: 2px 7px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.8);
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      font-size: 0.68rem;
+      color: #c4b5fd;
+    }
+
+    .score-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      background: rgba(22, 101, 52, 0.9);
+      color: #bbf7d0;
+      font-size: 0.72rem;
+    }
+
+    .score-chip span {
+      font-weight: 600;
+    }
+
+    .candidate-select {
+      margin-top: 6px;
+      margin-bottom: 4px;
+    }
+
+    footer {
+      margin-top: 22px;
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    footer span {
+      color: #e5e7eb;
+    }
+
+    @media (max-width: 960px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      main {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .header-right {
+        justify-content: flex-start;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero-copy {
+        padding: 18px 14px 16px;
+      }
+
+      .hero-title {
+        font-size: 1.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <header>
+      <div class="brand">
+        <div class="brand-logo">R</div>
+        <div class="brand-text">
+          <div class="brand-title">RoleFit AI™</div>
+          <div class="brand-sub">Smart Hiring Copilot</div>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="pill">
+          <span class="pill-dot"></span>
+          MVP Scope • Advisory Only
+        </div>
+        <button class="btn-outline" type="button">
+          <span>View MVP Scope</span>
+          <span>⟶</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-copy">
+        <div class="hero-float">
+          <span class="hero-float-dot"></span>
+          MVP Concept • 12/02/2025
+        </div>
+
+        <div class="hero-badge-row">
+          <div class="hero-badge">Write the job. Read the resumes. Advise the decision.</div>
+        </div>
+
+        <h1 class="hero-title">
+          Hire smarter with an
+          <span class="highlight">AI copilot</span>,
+          not a gatekeeper.
+        </h1>
+
+        <p class="hero-subtitle">
+          RoleFit AI™ builds your role profile, writes platform-specific job ads, scores resumes,
+          and summarizes interview notes to give clear, bias-aware hiring advice—while you stay in control.
+        </p>
+
+        <div class="hero-cta-row">
+          <button class="btn-primary" type="button" onclick="scrollToApp()">
+            Start with Role Profile
+            <span>↓</span>
+          </button>
+          <button class="btn-ghost" type="button" onclick="scrollToApp()">
+            View Job Ad Generator
+          </button>
+        </div>
+
+        <div class="hero-meta">
+          <span><strong>v1 MVP:</strong> Role Profile • Job Ads • Resume Review • Interview Debrief</span>
+          <span>Domain: Workplace & Productivity</span>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-pill-top">
+          <span>Colorful dashboard concept</span>
+        </div>
+
+        <div class="hero-image-wrapper">
+          <!-- You can swap this URL with your own illustration or static asset -->
+          <img
+            class="hero-image"
+            src="https://images.pexels.com/photos/1181675/pexels-photo-1181675.jpeg?auto=compress&cs=tinysrgb&w=1200"
+            alt="People collaborating during an interview"
+          />
+          <div class="hero-image-gradient"></div>
+
+          <div class="hero-stat-card">
+            <div class="hero-stat-label">Sample Candidate</div>
+            <div class="hero-stat-value">Fit Score: 82/100 • Strong Hire</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAIN APP -->
+    <main id="app-root">
+      <!-- LEFT COLUMN: ROLE + ADS -->
+      <div>
+        <!-- Role Profile -->
+        <section class="panel" id="role-profile">
+          <div class="panel-header">
+            <div class="panel-title">
+              <span>🎯 Role Profile Builder</span>
+            </div>
+            <span class="panel-tag">Single Source of Truth</span>
+          </div>
+          <p class="panel-description">
+            Define the role once. RoleFit AI™ uses this to generate job ads, evaluate resumes, and interpret interview notes.
+          </p>
+
+          <div class="grid-2">
+            <div>
+              <label for="role-title">Role title</label>
+              <input id="role-title" type="text" placeholder="e.g., Customer Success Manager" />
+            </div>
+            <div>
+              <label for="role-level">Seniority</label>
+              <select id="role-level">
+                <option value="">Select...</option>
+                <option>Junior</option>
+                <option>Mid-Level</option>
+                <option>Senior</option>
+                <option>Lead</option>
+                <option>Director</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid-2" style="margin-top: 10px;">
+            <div>
+              <label for="work-type">Work type</label>
+              <select id="work-type">
+                <option value="">Select...</option>
+                <option>Remote</option>
+                <option>Hybrid</option>
+                <option>On-site</option>
+              </select>
+            </div>
+            <div>
+              <label for="location">Location / Time Zone</label>
+              <input id="location" type="text" placeholder="e.g., US-EST, Remote OK, DC-area preferred" />
+            </div>
+          </div>
+
+          <div style="margin-top: 10px;">
+            <label for="role-mission">Role mission (why this role exists)</label>
+            <textarea id="role-mission" placeholder="One–two sentences that describe the core purpose of this role."></textarea>
+          </div>
+
+          <div class="grid-2" style="margin-top: 10px;">
+            <div>
+              <label for="responsibilities">Top responsibilities (5–7 bullets)</label>
+              <textarea id="responsibilities" placeholder="- Own onboarding for new clients&#10;- Run monthly check-ins..."></textarea>
+            </div>
+            <div>
+              <label for="must-have">Must-have skills & experience</label>
+              <textarea id="must-have" placeholder="- 3+ years in customer-facing role&#10;- Experience with HubSpot or similar CRM..."></textarea>
+            </div>
+          </div>
+
+          <div class="grid-2" style="margin-top: 10px;">
+            <div>
+              <label for="nice-to-have">Nice-to-have skills</label>
+              <textarea id="nice-to-have" placeholder="- Experience with SaaS&#10;- Familiarity with support tools (Zendesk, Intercom)..."></textarea>
+            </div>
+            <div>
+              <label for="company-culture">Company snapshot & culture</label>
+              <textarea id="company-culture" placeholder="Short company description + 3–5 bullets about values, culture, and what it's like to work here."></textarea>
+            </div>
+          </div>
+
+          <div class="section-divider"></div>
+
+          <div class="row">
+            <span style="font-size: 0.74rem; color: var(--text-muted);">
+              This profile powers all RoleFit AI™ outputs. Fill it once, reuse everywhere.
+            </span>
+            <button class="btn-primary" type="button" onclick="mockSaveProfile()">
+              Save Role Profile
+            </button>
+          </div>
+        </section>
+
+        <!-- Job Ad Generator -->
+        <section class="panel" id="job-ads">
+          <div class="panel-header">
+            <div class="panel-title">
+              <span>📣 JobMagnet Lite™ – Ad Generator</span>
+            </div>
+            <span class="panel-tag">Multi-Channel Ads</span>
+          </div>
+          <p class="panel-description">
+            Generate platform-specific job ads from your Role Profile. Copy, tweak, and post to LinkedIn, job boards, and social.
+          </p>
+
+          <div class="row">
+            <span style="font-size: 0.76rem; color: var(--text-muted);">
+              Choose which ad styles to generate:
+            </span>
+            <button class="btn-ghost" type="button" onclick="generateAds()">
+              Generate Ads from Role Profile
+            </button>
+          </div>
+
+          <div class="section-divider"></div>
+
+          <div class="output-label">
+            <span>LinkedIn-style job ad</span>
+            <span class="badge-soft">Long form • Keyword rich</span>
+          </div>
+          <div id="output-linkedin" class="output-box"></div>
+
+          <div class="output-label" style="margin-top: 10px;">
+            <span>Generic job board ad</span>
+            <span class="badge-soft">Structured • Clear</span>
+          </div>
+          <div id="output-jobboard" class="output-box"></div>
+
+          <div class="output-label" style="margin-top: 10px;">
+            <span>Social & referral snippets</span>
+            <span class="badge-soft">Short • Shareable</span>
+          </div>
+          <div id="output-social" class="output-box"></div>
+        </section>
+      </div>
+
+      <!-- RIGHT COLUMN: RESUMES + INTERVIEW -->
+      <div>
+        <!-- Resume Fit Analyzer -->
+        <section class="panel" id="resume-analyzer">
+          <div class="panel-header">
+            <div class="panel-title">
+              <span>📄 Resume Fit Analyzer</span>
+            </div>
+            <span class="panel-tag">Advisory Only</span>
+          </div>
+          <p class="panel-description">
+            Paste a candidate’s resume text. RoleFit AI™ will simulate a fit score, highlight strengths and gaps,
+            and draft suggested interview questions.
+          </p>
+
+          <label for="candidate-name">Candidate name (for your reference)</label>
+          <input id="candidate-name" type="text" placeholder="e.g., Alex Rivera" />
+
+          <label for="resume-text" style="margin-top: 8px;">Resume text</label>
+          <textarea id="resume-text" placeholder="Paste the candidate's resume text here (no files yet—MVP text-only)."></textarea>
+
+          <div class="section-divider"></div>
+
+          <div class="row">
+            <span style="font-size: 0.74rem; color: var(--text-muted);">
+              RoleFit AI™ will not auto-reject candidates. It only provides advisory insights.
+            </span>
+            <button class="btn-primary" type="button" onclick="analyzeResume()">
+              Analyze Resume
+            </button>
+          </div>
+
+          <div class="section-divider"></div>
+
+          <div class="candidate-select">
+            <span class="output-label">
+              <span>Candidate assessment</span>
+            </span>
+          </div>
+
+          <div class="output-box" id="output-resume"></div>
+        </section>
+
+        <!-- Interview Debrief -->
+        <section class="panel" id="interview-debrief">
+          <div class="panel-header">
+            <div class="panel-title">
+              <span>📝 Interview Notes → Advice</span>
+            </div>
+            <span class="panel-tag">Post-Interview</span>
+          </div>
+          <p class="panel-description">
+            After the interview, paste your notes. RoleFit AI™ will summarize, align with the Role Profile, and
+            suggest a “Hire / Maybe / No” advisory recommendation with reasoning.
+          </p>
+
+          <label for="interview-notes">Interview notes</label>
+          <textarea
+            id="interview-notes"
+            placeholder="e.g., Led team of 4, owned onboarding, struggled to give metrics examples, strong rapport, values aligned..."
+          ></textarea>
+
+          <div class="section-divider"></div>
+
+          <div class="row">
+            <span style="font-size: 0.74rem; color: var(--text-muted);">
+              This is decision support—not an automated hiring decision.
+            </span>
+            <button class="btn-primary" type="button" onclick="debriefInterview()">
+              Summarize & Advise
+            </button>
+          </div>
+
+          <div class="section-divider"></div>
+
+          <div class="output-label">
+            <span>Advisory recommendation</span>
+            <span class="badge-soft">Hire / Maybe / No + reasoning</span>
+          </div>
+          <div class="output-box" id="output-debrief"></div>
+        </section>
+      </div>
+    </main>
+
+    <footer>
+      Built as a <span>Single-File SaaS™</span> concept for RoleFit AI™ • MVP scope only • 12/02/2025
+    </footer>
+  </div>
+
+  <script>
+    // Simple front-end stubs to make the page feel alive.
+    // Replace with real API calls later.
+
+    function scrollToApp() {
+      const root = document.getElementById("app-root");
+      if (root) root.scrollIntoView({ behavior: "smooth" });
+    }
+
+    function getRoleProfileSnapshot() {
+      const roleTitle = document.getElementById("role-title").value || "Your Role";
+      const level = document.getElementById("role-level").value || "TBD level";
+      const workType = document.getElementById("work-type").value || "TBD work type";
+      const location = document.getElementById("location").value || "TBD location";
+      const mission = document.getElementById("role-mission").value || "TBD mission.";
+      const responsibilities = document.getElementById("responsibilities").value || "- TBD responsibilities";
+      const mustHave = document.getElementById("must-have").value || "- TBD must-have skills";
+      const niceToHave = document.getElementById("nice-to-have").value || "- TBD nice-to-have skills";
+      const culture = document.getElementById("company-culture").value || "TBD company snapshot and culture.";
+
+      return {
+        roleTitle,
+        level,
+        workType,
+        location,
+        mission,
+        responsibilities,
+        mustHave,
+        niceToHave,
+        culture
+      };
+    }
+
+    function mockSaveProfile() {
+      const { roleTitle } = getRoleProfileSnapshot();
+      alert(`Role profile saved for: ${roleTitle || "RoleFit AI"}`);
+    }
+
+    function generateAds() {
+      const profile = getRoleProfileSnapshot();
+
+      const linkedin = `
+${profile.roleTitle} (${profile.level}) – ${profile.location}
+
+${profile.mission}
+
+What you'll do:
+${profile.responsibilities}
+
+What we're looking for:
+${profile.mustHave}
+
+Nice-to-haves:
+${profile.niceToHave}
+
+About us:
+${profile.culture}
+
+If this sounds like you, we’d love to meet you. Apply with your resume and a quick note on why this role feels like a fit.
+      `.trim();
+
+      const jobboard = `
+Job Title: ${profile.roleTitle}
+Level: ${profile.level}
+Work Type: ${profile.workType}
+Location: ${profile.location}
+
+Role Summary:
+${profile.mission}
+
+Key Responsibilities:
+${profile.responsibilities}
+
+Required Qualifications:
+${profile.mustHave}
+
+Preferred Qualifications:
+${profile.niceToHave}
+
+About the Company:
+${profile.culture}
+      `.trim();
+
+      const social = `
+LinkedIn / Facebook:
+"We're hiring a ${profile.roleTitle} (${profile.level})! If you love ${profile.mission.toLowerCase().slice(0, 120)}..., this could be a great fit. Role is ${profile.workType.toLowerCase()} based in ${profile.location}. Comment 'INTERESTED' or check the job link to learn more."
+
+Referral DM:
+"Hey [Name], we're looking for a ${profile.roleTitle} at our company. Thought of you (or someone you might know). Quick summary: ${profile.mission} – ${profile.workType}, ${profile.location}. Want the full description?"
+      `.trim();
+
+      document.getElementById("output-linkedin").textContent = linkedin;
+      document.getElementById("output-jobboard").textContent = jobboard;
+      document.getElementById("output-social").textContent = social;
+    }
+
+    function analyzeResume() {
+      const candidate = document.getElementById("candidate-name").value || "This candidate";
+      const resume = document.getElementById("resume-text").value.trim();
+      const profile = getRoleProfileSnapshot();
+
+      if (!resume) {
+        document.getElementById("output-resume").textContent =
+          "Paste resume text above to simulate a RoleFit AI™ analysis.";
+        return;
+      }
+
+      const textLength = resume.length;
+      const heuristicScore = Math.min(96, Math.max(55, 60 + Math.floor(textLength / 300)));
+      const label = heuristicScore >= 80 ? "Strong Hire" : heuristicScore >= 70 ? "Consider" : "Longshot";
+
+      const output = `
+${candidate} – Fit Score (simulated): ${heuristicScore}/100 • ${label}
+
+Snapshot:
+- Role target: ${profile.roleTitle} (${profile.level})
+- Work type: ${profile.workType} • Location: ${profile.location}
+
+Strengths (example):
+- Experience appears relevant to ${profile.roleTitle} based on text density and responsibilities mentioned.
+- Shows signs of ownership and progression (heuristic: longer roles or multiple promotions indicated by varied titles).
+- Communication seems clear from how the resume content is structured.
+
+Potential Gaps / Watch Areas:
+- Verify hands-on expertise for the must-have skills you listed (e.g., tools, years of experience, specific outcomes).
+- Ask about any short stints or gaps you notice in the timeline.
+- Clarify how much of their work maps directly to your top responsibilities.
+
+Suggested interview questions:
+1) "Walk me through a recent project where you directly contributed to ${profile.mission.toLowerCase()} What was your role and what changed as a result?"
+2) "Looking at our top responsibilities (${profile.roleTitle}), which two do you feel strongest in and which one would stretch you?"
+3) "Tell me about a time you had to deliver for a client or stakeholder under pressure. What did you do?"
+4) "Which tools or systems have you used that match or are similar to ours, and how deep is your experience with them?"
+5) "Based on what you know so far, what excites you — and what concerns you — about this role?"
+
+Note: This is an advisory simulation only. Final decisions should be based on your judgment, the interview conversation, and alignment with team and culture.
+      `.trim();
+
+      document.getElementById("output-resume").textContent = output;
+    }
+
+    function debriefInterview() {
+      const notes = document.getElementById("interview-notes").value.trim();
+      const profile = getRoleProfileSnapshot();
+
+      if (!notes) {
+        document.getElementById("output-debrief").textContent =
+          "Paste your interview notes above to get a debrief summary and advisory recommendation.";
+        return;
+      }
+
+      const strengthSignal = notes.toLowerCase().includes("led") || notes.toLowerCase().includes("owned");
+      const metricsSignal = notes.toLowerCase().includes("metrics") || notes.toLowerCase().includes("kpi");
+      let recommendation = "Maybe";
+      let recText =
+        "Candidate shows partial alignment with the role and culture. Worth considering further, but clarify gaps before deciding.";
+
+      if (strengthSignal && metricsSignal) {
+        recommendation = "Hire";
+        recText =
+          "Candidate demonstrated clear ownership, relevant experience, and some metrics-driven thinking. They appear to map well to your top responsibilities and culture.";
+      } else if (!strengthSignal && !metricsSignal) {
+        recommendation = "No";
+        recText =
+          "Candidate did not clearly demonstrate ownership or measurable impact based on your notes. They may be better suited to a different role or level.";
+      }
+
+      const output = `
+Summary (based on your notes):
+${notes}
+
+Alignment with Role Profile:
+- Role purpose: ${profile.mission}
+- The candidate appears to align with some responsibilities you defined, but you should check whether they can consistently deliver on:
+  ${profile.responsibilities || "- TBD responsibilities"}
+
+Advisory recommendation: ${recommendation.toUpperCase()}
+${recText}
+
+Follow-up prompts you can use:
+- "If we hired you into this ${profile.roleTitle} role, what would your first 30–60 days look like?"
+- "Which part of our responsibilities list do you feel least confident about right now?"
+- "Tell me about a mistake you made in a similar role and what you changed afterward."
+
+Important:
+This is an advisory debrief generated from your own notes. RoleFit AI™ does not make or automate hiring decisions. Use this as a structured second opinion, not a final verdict.
+      `.trim();
+
+      document.getElementById("output-debrief").textContent = output;
+    }
+  </script>
+</body>
+</html>
